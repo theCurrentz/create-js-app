@@ -62,6 +62,13 @@ for the Object.
 
 _Note: The `publicPath` property is required, whereas all other options are optional_
 
+### methods
+
+Type: `Array`  
+Default: `[ 'GET' ]`
+
+This property allows a user to pass the list of HTTP request methods accepted by the server. 
+
 ### headers
 
 Type: `Object`  
@@ -314,10 +321,14 @@ Example Implementation:
 ```js
 const webpack = require('webpack');
 const compiler = webpack({ ... });
+const isObject = require('is-object');
 const middleware = require('webpack-dev-middleware');
 
 // This function makes server rendering of asset references consistent with different webpack chunk/entry configurations
 function normalizeAssets(assets) {
+  if (isObject(assets)) {
+    return Object.values(assets)
+  }
   return Array.isArray(assets) ? assets : [assets]
 }
 
